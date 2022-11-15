@@ -13,10 +13,31 @@ A simple app that displays diagnosed issues.
 
 ## Development
 
-Clone this repo, and run:
+Make sure you have supabase installed, then run:
 
 ```bash
 yarn
+supabase start
+supabase db reset
+supabase status
+```
+
+Now, create a `.env` file with your credentials. You will need to obtain a Recharge api token from the Recharge app.
+
+```txt
+RECHARGE_API_TOKEN=xxx
+VITE_SUPABASE_URL=http://localhost:54321
+VITE_SUPABASE_ANON_KEY=xxx
+VITE_SUPABASE_SERVICE_KEY=xxx
+```
+
+You will also need to obtain BigQuery credentials, and store your key in `./credentials.json`.
+
+### Running
+
+To run the processes:
+
+```bash
 yarn script:start
 yarn frontend:dev
 ```
