@@ -1,0 +1,16 @@
+bak
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+package-lock.json
+.env
+.env.*
+*.log
+.eslintcache
+.orig
+*.orig
+/.gtm/
+data/*.json
+credentials.json
