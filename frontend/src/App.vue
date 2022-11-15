@@ -8,6 +8,7 @@
           <th>Issue</th>
           <th>Expected</th>
           <th>Actual</th>
+          <th>Created At</th>
         </tr>
       </thead>
       <tbody>
@@ -32,6 +33,9 @@
           <td>
             {{ issue.data.actual }}
           </td>
+          <td>
+            {{ formatDateTime(issue.created_at) }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -40,12 +44,8 @@
 
 <script setup>
 import { ref } from 'vue'
-import { createClient } from '@supabase/supabase-js'
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_ANON_KEY
-)
+import { supabase } from './services/supabase'
+import { formatDateTime } from './services/formatters'
 
 const url = (id) => `https://oats-3-sp.admin.rechargeapps.com/merchant/customers/${id}`
 
@@ -56,6 +56,8 @@ const loadRecords = async () => {
     .from('issues')
     .select()
     .order('customer_id')
+    .order('bundle_id')
+    .order('data->message')
   if (error) {
     console.error(error)
   } else if (data) {
