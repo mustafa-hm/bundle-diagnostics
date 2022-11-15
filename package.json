@@ -9,7 +9,9 @@
   ],
   "scripts": {
     "script:start": "dotenv yarn workspace script start",
-    "frontend:dev": "dotenv yarn workspace frontend dev"
+    "dev": "dotenv yarn workspace frontend dev",
+    "build": "yarn workspace frontend build",
+    "start": "yarn workspace frontend start"
   },
   "devDependencies": {
     "dotenv": "^16.0.3"
