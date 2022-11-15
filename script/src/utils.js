@@ -23,6 +23,9 @@ export const getPackSize = (item) => {
 }
 
 export const getProp = (item, propName) => {
+  if (!item.properties) {
+    return
+  }
   const prop = item.properties.find((p) => p.name === propName)
   return prop && prop.value
 }

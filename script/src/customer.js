@@ -1,6 +1,6 @@
 import { AssertionError } from 'assert'
 import recharge from './recharge.js'
-import { assert, groupBundles } from './utils.js'
+import { assert, getProp, groupBundles } from './utils.js'
 import { createIssue } from './issues.js'
 
 export async function getSubscriptions (customerId) {
@@ -13,7 +13,7 @@ export async function verifyCustomer (customerId) {
   const { bundles, unbundled } = groupBundles(subs)
   console.log('> Verifying customer', customerId, 'bundles', bundles.length, 'unbundled', unbundled.length)
   try {
-    assert(0, unbundled.length, 'Orphaned Subs')
+    assert(0, unbundled.filter(i => getProp('__bundle_id')).length, 'Orphaned Subs')
     for (const bundle of bundles) {
       const { parent, children, size, totalQuantity } = bundle
       assert(size, totalQuantity, 'Bundle Size')
