@@ -1,5 +1,4 @@
 import { AssertionError } from 'assert'
-import { createRequire } from 'module'
 import { promises as fs } from 'fs'
 import { BigQuery } from '@google-cloud/bigquery'
 
@@ -7,8 +6,7 @@ import { assert, timer } from './src/utils.js'
 import { verifyCustomer } from './src/customer.js'
 import { reset } from './src/issues.js'
 
-const require = createRequire(import.meta.url)
-const credentials = require('../credentials.json')
+const credentials = JSON.parse(process.env.BIG_QUERY_CREDENTIALS)
 const client = new BigQuery({ credentials })
 
 async function getSubscriptions () {
