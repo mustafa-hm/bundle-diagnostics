@@ -1,20 +1,16 @@
 {
-  "type": "module",
   "name": "bundle-diagnostics",
   "version": "1.0.0",
-  "main": "index.js",
-  "author": "Spencer Steffen <spencer@oatsovernight.com>",
-  "license": "MIT",
+  "author": "Spencer Steffen <spencer@citrusme.com>",
   "private": true,
-  "dependencies": {
-    "@google-cloud/bigquery": "^6.0.3",
-    "axios": "^0.27.2",
-    "date-fns": "^2.29.1"
+  "workspaces": [
+    "script",
+    "frontend"
+  ],
+  "scripts": {
+    "script:start": "dotenv yarn workspace script start"
   },
   "devDependencies": {
     "dotenv": "^16.0.3"
-  },
-  "scripts": {
-    "start": "node index.js"
   }
 }

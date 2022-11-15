@@ -30,9 +30,10 @@ export async function verifyCustomer (customerId) {
       console.log('    message:', e.message)
       console.log('    expected:', e.expected, 'actual:', e.actual)
       console.log('------------')
+      // track issue
+      process.exit(1)
     } else {
-      console.error(e)
+      throw e
     }
-    process.exit(1)
   }
 }

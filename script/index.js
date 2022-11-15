@@ -6,10 +6,8 @@ import { BigQuery } from '@google-cloud/bigquery'
 import { assert, timer } from './src/utils.js'
 import { verifyCustomer } from './src/customer.js'
 
-// import { subDays } from 'date-fns'
-
 const require = createRequire(import.meta.url)
-const credentials = require('./credentials.json')
+const credentials = require('../credentials.json')
 const client = new BigQuery({ credentials })
 
 async function getSubscriptions () {
@@ -17,10 +15,6 @@ async function getSubscriptions () {
   const [ rows ] = await client.query({
     query,
     location: 'US'
-    // params: {
-    //   START_DATE: subDays(new Date(), 8).toJSON(),
-    //   END_DATE: new Date().toJSON() //subDays(new Date(), 0).toJSON()
-    // }
   })
   return rows.reduce((acc, sub) => {
     acc[sub.customer_id] ||= {}
@@ -47,11 +41,11 @@ async function main() {
       }
     } catch (e) {
       if (e instanceof AssertionError) {
-        // console.log(e)
-        // error with data from BigQuery, fetch actual data from Recharge
+        // error with data from BigQuery, fetch actual data from Recharge for verification
         await verifyCustomer(customer_id)
         await timer(250)
-        // process.exit(0)
+      } else {
+        throw e
       }
     }
   }
