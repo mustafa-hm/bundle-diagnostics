@@ -4,6 +4,7 @@
       <thead>
         <tr>
           <th>Customer ID</th>
+          <th>Bundle ID</th>
           <th>Issue</th>
           <th>Expected</th>
           <th>Actual</th>
@@ -18,6 +19,9 @@
             <a :href="url(issue.customer_id)" target="_blank">
               {{ issue.customer_id }}
             </a>
+          </td>
+          <td>
+            {{ issue.bundle_id }}
           </td>
           <td>
             {{ issue.data.message }}
