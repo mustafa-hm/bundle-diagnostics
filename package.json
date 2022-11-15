@@ -8,7 +8,8 @@
     "frontend"
   ],
   "scripts": {
-    "script:start": "dotenv yarn workspace script start"
+    "script:start": "dotenv yarn workspace script start",
+    "frontend:dev": "dotenv yarn workspace frontend dev"
   },
   "devDependencies": {
     "dotenv": "^16.0.3"

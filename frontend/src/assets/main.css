@@ -1,0 +1,32 @@
+html, body {
+  margin: 0;
+  font-family: 'Helvetica', arial, sans-serif;
+  color: #222;
+}
+
+table {
+  margin: 20px auto;
+  text-align: left;
+}
+
+table th,
+table td {
+  padding: 5px 10px;
+  border-bottom: 1px solid #efefef;
+}
+
+table td {
+  font-size: 14px;
+}
+
+a[href] {
+  color: #5e9c2b;
+  text-decoration: none;
+}
+a[href]:hover {
+  color: #528825;
+  text-decoration: underline;
+}
+a[href]:visited {
+  color: #3a601a;
+}
