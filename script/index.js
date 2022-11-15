@@ -5,6 +5,7 @@ import { BigQuery } from '@google-cloud/bigquery'
 
 import { assert, timer } from './src/utils.js'
 import { verifyCustomer } from './src/customer.js'
+import { reset } from './src/issues.js'
 
 const require = createRequire(import.meta.url)
 const credentials = require('../credentials.json')
@@ -25,10 +26,13 @@ async function getSubscriptions () {
 }
 
 async function main() {
+  await reset()
   const subsByCustomer = await getSubscriptions()
   console.log('** Diagnosing %d customers', Object.keys(subsByCustomer).length)
   for (const [ customer_id, bundles ] of Object.entries(subsByCustomer)) {
     try {
+      console.log('---')
+      console.log('> Customer:', customer_id)
       for (const [ bundle_id, subs ] of Object.entries(bundles)) {
         for (const sub of subs) {
           assert(sub.parent_bundle_id, sub.child_bundle_id, 'Bundle ID')

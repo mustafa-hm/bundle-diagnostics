@@ -1,5 +1,7 @@
+import { AssertionError } from 'assert'
 import recharge from './recharge.js'
 import { assert, groupBundles } from './utils.js'
+import { createIssue } from './issues.js'
 
 export async function getSubscriptions (customerId) {
   const { data } = await recharge.get(`/subscriptions?customer_id=${customerId}&limit=250&page=1&status=active`)
@@ -24,14 +26,21 @@ export async function verifyCustomer (customerId) {
     }
   } catch (e) {
     if (e instanceof AssertionError) {
+      const { message, expected, actual } = e
       console.log('------------')
       console.log('>> Customer Verification Failed <<')
       console.log('    customerId:', customerId)
-      console.log('    message:', e.message)
-      console.log('    expected:', e.expected, 'actual:', e.actual)
+      console.log('    message:', message)
+      console.log('    expected:', expected, 'actual:', actual)
       console.log('------------')
-      // track issue
-      process.exit(1)
+      await createIssue({
+        customer_id: customerId,
+        data: {
+          message,
+          expected,
+          actual
+        }
+      })
     } else {
       throw e
     }
