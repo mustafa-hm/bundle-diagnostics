@@ -1,6 +1,4 @@
 import axios from 'axios'
-import dotenv from 'dotenv'
-dotenv.config()
 
 export const recharge = axios.create({
   baseURL: 'https://api.rechargeapps.com/',
