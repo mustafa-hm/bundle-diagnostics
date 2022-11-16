@@ -19,6 +19,10 @@ table td {
   font-size: 14px;
 }
 
+table tr.resolved td {
+  text-decoration: line-through;
+}
+
 a[href] {
   color: #5e9c2b;
   text-decoration: none;

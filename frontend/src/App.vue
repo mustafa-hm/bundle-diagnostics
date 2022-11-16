@@ -10,6 +10,7 @@
           <th>Issues</th>
           <th>Created At</th>
           <th>Portal</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
