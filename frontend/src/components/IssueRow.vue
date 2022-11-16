@@ -3,14 +3,14 @@
     :class="resolved && 'resolved'"
   >
     <td>
-      <a :href="customerUrl(issue.customer_id)" target="_blank">
+      <a :href="urls.customerUrl(issue.customer_id)" target="_blank">
         {{ issue.customer_id }}
       </a>
     </td>
     <td>
       <a
         v-if="issue.charge_id"
-        :href="chargeUrl(issue.charge_id)"
+        :href="urls.chargeUrl(issue.charge_id)"
         target="_blank"
       >
         {{ issue.charge_id }}
@@ -33,7 +33,7 @@
       {{ formatDateTime(issue.created_at) }}
     </td>
     <td>
-      <a :href="portalUrl(issue.customer_id)" target="_blank">
+      <a :href="urls.portalUrl(issue.customer_id)" target="_blank">
         view portal
       </a>
     </td>
@@ -55,17 +55,13 @@ import { ref } from 'vue'
 import store from '@/store'
 import { supabase } from '@/services/supabase'
 import { formatDate, formatDateTime } from '@/services/formatters'
+import urls from '@/services/urls'
 
 const props = defineProps({
   issue: Object
 })
 
 const resolved = ref(props.issue.resolved_at)
-
-const rechargeUrl = (path) => `https://oats-3-sp.admin.rechargeapps.com/merchant/${path}`
-const customerUrl = (id) => rechargeUrl(`customers/${id}`)
-const chargeUrl = (id) => rechargeUrl(`orders/charges/${id}`)
-const portalUrl = (id) => `https://oats-cs-portal-tool.herokuapp.com/portal/${id}`
 
 const resolve = async () => {
   const { value } = resolved

@@ -6,7 +6,12 @@
     >
       <div class="modal-content">
         <button @click="store.issue = null">close</button>
-        <h1>Customer {{ issue.customer_id }}</h1>
+        <h1>
+          Customer
+          <a :href="urls.customerUrl(issue.customer_id)" target="_blank">
+            {{ issue.customer_id }}
+          </a>
+        </h1>
         <pre>{{ issue }}</pre>
       </div>
     </div>
@@ -15,6 +20,8 @@
 
 <script setup>
 import store from '@/store'
+import urls from '@/services/urls'
+
 defineProps({
   issue: Object
 })
