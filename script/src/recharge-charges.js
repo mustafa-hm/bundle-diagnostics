@@ -1,14 +1,17 @@
-import recharge from './recharge.js'
 import { addDays } from 'date-fns'
+import recharge from './recharge.js'
 import { verifyCustomer } from './customer.js'
 import { createIssues } from './issues.js'
 import { timer } from './utils.js'
 
+const RECHARGE_SCHEDULED_OUT_DAYS = parseInt(process.env.RECHARGE_SCHEDULED_OUT_DAYS || 2)
+
 export default async function () {
-  const twoDaysOut = addDays(new Date(), 2)
+  const maxDate = addDays(new Date(), RECHARGE_SCHEDULED_OUT_DAYS)
+  console.log('> Loading charges up until', maxDate)
   let page = 1
   const fetchCharges = async (page) => {
-    const { data } = await recharge.get(`/charges?status=queued,pending&sort_by=scheduled_at-asc&scheduled_at_max=${twoDaysOut.toJSON()}&page=${page}`)
+    const { data } = await recharge.get(`/charges?status=queued,pending&sort_by=scheduled_at-asc&scheduled_at_max=${maxDate.toJSON()}&page=${page}`)
     return data.charges
   }
   let charges = await fetchCharges(page)
