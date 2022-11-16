@@ -60,9 +60,11 @@ h2 {
 .modal-content {
   position: relative;
   width: 40%;
+  max-height: 80vh;
   padding: 20px;
   background: #fff;
   border-radius: 4px;
+  overflow: auto;
 }
 
 .modal-content button {
