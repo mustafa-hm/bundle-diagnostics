@@ -4,6 +4,7 @@ export async function reset () {
   await supabase
     .from('issues')
     .delete()
+    .gt('id', 0)
 }
 
 export async function createIssue (attributes) {
