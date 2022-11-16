@@ -9,6 +9,7 @@
           <th>Expected</th>
           <th>Actual</th>
           <th>Created At</th>
+          <th>Portal</th>
         </tr>
       </thead>
       <tbody>
@@ -17,7 +18,7 @@
           :key="issue.id"
         >
           <td>
-            <a :href="url(issue.customer_id)" target="_blank">
+            <a :href="rechargeUrl(issue.customer_id)" target="_blank">
               {{ issue.customer_id }}
             </a>
           </td>
@@ -36,6 +37,11 @@
           <td>
             {{ formatDateTime(issue.created_at) }}
           </td>
+          <td>
+            <a :href="portalUrl(issue.customer_id)" target="_blank">
+              view portal
+            </a>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -47,7 +53,8 @@ import { ref } from 'vue'
 import { supabase } from './services/supabase'
 import { formatDateTime } from './services/formatters'
 
-const url = (id) => `https://oats-3-sp.admin.rechargeapps.com/merchant/customers/${id}`
+const rechargeUrl = (id) => `https://oats-3-sp.admin.rechargeapps.com/merchant/customers/${id}`
+const portalUrl = (id) => `https://oats-cs-portal-tool.herokuapp.com/portal/${id}`
 
 const issues = ref()
 
