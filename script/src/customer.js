@@ -8,51 +8,52 @@ export async function getSubscriptions (customerId) {
   return data.subscriptions
 }
 
-const assertAndTrack = async (expected, actual, attributes) => {
-  const { customer_id, bundle_id } = attributes
-  try {
-    assert(expected, actual, attributes.message)
-  } catch (e) {
-    if (e instanceof AssertionError) {
-      const { message, expected, actual } = e
-      console.log('------------')
-      console.log('>> Customer Verification Failed <<')
-      console.log('    customerId:', customer_id)
-      console.log('    message:', message)
-      console.log('    expected:', expected, 'actual:', actual)
-      console.log('------------')
-      await createIssue({
-        customer_id,
-        bundle_id,
-        data: {
-          message,
-          expected,
-          actual
-        }
-      })
-    } else {
-      throw e
-    }
-  }
+const report = (e) =>{
+  const { message, expected, actual } = e
+  console.log('------------')
+  console.log('>> Assertion Verification Failed <<')
+  console.log('    message:', message)
+  console.log('    expected:', expected, 'actual:', actual)
+  console.log('------------')
 }
 
 export async function verifyCustomer (customerId) {
+  const issues = []
   const subs = await getSubscriptions(customerId)
-  const attributes = {
-    customer_id: customerId
-  }
-  const { bundles, unbundled } = groupBundles(subs)
-  console.log('> Verifying customer', customerId, 'bundles', bundles.length, 'unbundled', unbundled.length)
-  await assertAndTrack(0, unbundled.filter(i => getProp('__bundle_id')).length, { ...attributes, message: 'Orphaned Subs' })
-  for (const bundle of bundles) {
-    const { id, parent, children, size, totalQuantity } = bundle
-    attributes.bundle_id = id
-    await assertAndTrack(size, totalQuantity, { ...attributes, message: 'Bundle Size' })
-    for (const child of children) {
-      await assertAndTrack(parent.address_id, child.address_id, { ...attributes, message: 'Charge Date' })
-      await assertAndTrack(parent.next_charge_schedule_at, child.next_charge_schedule_at, { ...attributes, message: 'Charge Date' })
-      await assertAndTrack(parent.order_interval_frequency, child.order_interval_frequency, { ...attributes, message: 'Interval Frequency' })
-      await assertAndTrack(parent.order_interval_unit, child.order_interval_unit, { ...attributes, message: 'Interval Unit' })
+
+
+  const assertAndReport = async (expected, actual, attributes) => {
+    try {
+      assert(expected, actual, attributes.type)
+    } catch (e) {
+      if (e instanceof AssertionError) {
+        report(e)
+        issues.push({
+          ...attributes,
+          expected,
+          actual
+        })
+      } else {
+        throw e
+      }
     }
   }
+
+  const { bundles, unbundled } = groupBundles(subs)
+  console.log('> Verifying customer', customerId, 'bundles', bundles.length, 'unbundled', unbundled.length)
+
+  await assertAndReport(0, unbundled.filter(i => getProp('__bundle_id')).length, { type: 'Orphaned Subs' })
+
+  for (const bundle of bundles) {
+    const { id, parent, children, size, totalQuantity } = bundle
+    await assertAndReport(size, totalQuantity, { bundle_id: id, type: 'Bundle Size' })
+    for (const child of children) {
+      await assertAndReport(parent.address_id, child.address_id, { bundle_id: id, type: 'Charge Date' })
+      await assertAndReport(parent.next_charge_schedule_at, child.next_charge_schedule_at, { bundle_id: id, type: 'Charge Date' })
+      await assertAndReport(parent.order_interval_frequency, child.order_interval_frequency, { bundle_id: id, type: 'Interval Frequency' })
+      await assertAndReport(parent.order_interval_unit, child.order_interval_unit, { bundle_id: id, type: 'Interval Unit' })
+    }
+  }
+
+  return issues
 }

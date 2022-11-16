@@ -4,10 +4,10 @@
       <thead>
         <tr>
           <th>Customer ID</th>
+          <th>Charge ID</th>
+          <th>Charge Date</th>
           <th>Bundle ID</th>
-          <th>Issue</th>
-          <th>Expected</th>
-          <th>Actual</th>
+          <th>Issues</th>
           <th>Created At</th>
           <th>Portal</th>
         </tr>
@@ -18,21 +18,23 @@
           :key="issue.id"
         >
           <td>
-            <a :href="rechargeUrl(issue.customer_id)" target="_blank">
+            <a :href="customerUrl(issue.customer_id)" target="_blank">
               {{ issue.customer_id }}
             </a>
+          </td>
+          <td>
+            <a :href="chargeUrl(issue.charge_id)" target="_blank">
+              {{ issue.charge_id }}
+            </a>
+          </td>
+          <td>
+            {{ issue.scheduled_at && formatDate(issue.scheduled_at) }}
           </td>
           <td>
             {{ issue.bundle_id }}
           </td>
           <td>
-            {{ issue.data.message }}
-          </td>
-          <td>
-            {{ issue.data.expected }}
-          </td>
-          <td>
-            {{ issue.data.actual }}
+            {{ Array.isArray(issue.data) ? issue.data.length : '' }}
           </td>
           <td>
             {{ formatDateTime(issue.created_at) }}
@@ -51,9 +53,11 @@
 <script setup>
 import { ref } from 'vue'
 import { supabase } from './services/supabase'
-import { formatDateTime } from './services/formatters'
+import { formatDate, formatDateTime } from './services/formatters'
 
-const rechargeUrl = (id) => `https://oats-3-sp.admin.rechargeapps.com/merchant/customers/${id}`
+const rechargeUrl = (path) => `https://oats-3-sp.admin.rechargeapps.com/merchant/${path}`
+const customerUrl = (id) => rechargeUrl(`customers/${id}`)
+const chargeUrl = (id) => rechargeUrl(`orders/charges/${id}`)
 const portalUrl = (id) => `https://oats-cs-portal-tool.herokuapp.com/portal/${id}`
 
 const issues = ref()
@@ -62,6 +66,7 @@ const loadRecords = async () => {
   const { data, error } = await supabase
     .from('issues')
     .select()
+    .order('scheduled_at')
     .order('customer_id')
     .order('bundle_id')
     .order('data->message')
