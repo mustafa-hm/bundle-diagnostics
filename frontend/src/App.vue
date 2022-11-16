@@ -13,52 +13,27 @@
         </tr>
       </thead>
       <tbody>
-        <tr
+        <IssueRow
           v-for="issue in issues"
           :key="issue.id"
-        >
-          <td>
-            <a :href="customerUrl(issue.customer_id)" target="_blank">
-              {{ issue.customer_id }}
-            </a>
-          </td>
-          <td>
-            <a :href="chargeUrl(issue.charge_id)" target="_blank">
-              {{ issue.charge_id }}
-            </a>
-          </td>
-          <td>
-            {{ issue.scheduled_at && formatDate(issue.scheduled_at) }}
-          </td>
-          <td>
-            {{ issue.bundle_id }}
-          </td>
-          <td>
-            {{ Array.isArray(issue.data) ? issue.data.length : '' }}
-          </td>
-          <td>
-            {{ formatDateTime(issue.created_at) }}
-          </td>
-          <td>
-            <a :href="portalUrl(issue.customer_id)" target="_blank">
-              view portal
-            </a>
-          </td>
-        </tr>
+          :issue="issue"
+        />
       </tbody>
     </table>
+    <IssueModal
+      v-if="store.issue"
+      :issue="store.issue"
+    />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { supabase } from './services/supabase'
-import { formatDate, formatDateTime } from './services/formatters'
+import { supabase } from '@/services/supabase'
+import store from '@/store'
 
-const rechargeUrl = (path) => `https://oats-3-sp.admin.rechargeapps.com/merchant/${path}`
-const customerUrl = (id) => rechargeUrl(`customers/${id}`)
-const chargeUrl = (id) => rechargeUrl(`orders/charges/${id}`)
-const portalUrl = (id) => `https://oats-cs-portal-tool.herokuapp.com/portal/${id}`
+import IssueRow from '@/components/IssueRow.vue'
+import IssueModal from '@/components/IssueModal.vue'
 
 const issues = ref()
 

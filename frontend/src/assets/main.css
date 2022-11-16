@@ -30,3 +30,43 @@ a[href]:hover {
 a[href]:visited {
   color: #3a601a;
 }
+
+button {
+  cursor: pointer;
+}
+
+h1 {
+  font-size: 20px;
+}
+
+h2 {
+  font-size: 17px;
+}
+
+.modal,
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  background-color: rgba(0,0,0,0.75);
+}
+
+.modal-content {
+  position: relative;
+  width: 40%;
+  padding: 20px;
+  background: #fff;
+  border-radius: 4px;
+}
+
+.modal-content button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
