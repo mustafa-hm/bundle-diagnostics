@@ -2,18 +2,30 @@ import { reset } from './src/issues.js'
 import bigQuery from './src/big-query.js'
 import rechargeCharges from './src/recharge-charges.js'
 
-async function main() {
+const {
+  RESET,
+  BIG_QUERY,
+  RECHARGE
+} = process.env
+
+async function main () {
   console.log('=================================')
   console.log('// Resetting Issues')
-  await reset()
+  if (RESET) {
+    await reset()
+  }
 
-  console.log('=================================')
-  console.log('// Processing BigQuery')
-  await bigQuery()
+  if (BIG_QUERY) {
+    console.log('=================================')
+    console.log('// Processing BigQuery')
+    await bigQuery()
+  }
 
-  console.log('=================================')
-  console.log('// Processing Upcoming Charges')
-  await rechargeCharges()
+  if (RECHARGE) {
+    console.log('=================================')
+    console.log('// Processing Upcoming Charges')
+    await rechargeCharges()
+  }
 }
 
 main()

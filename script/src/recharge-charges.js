@@ -7,7 +7,7 @@ export default async function () {
   const twoDaysOut = addDays(new Date(), 2)
   let page = 1
   const fetchCharges = async (page) => {
-    const { data } = await recharge.get(`/charges?customer_id=50944315&status=queued,pending&sort_by=id-asc&scheduled_at_max=${twoDaysOut.toJSON()}&page=${page}`)
+    const { data } = await recharge.get(`/charges?status=queued,pending&sort_by=id-asc&scheduled_at_max=${twoDaysOut.toJSON()}&page=${page}`)
     return data.charges
   }
   let charges = await fetchCharges(page)
