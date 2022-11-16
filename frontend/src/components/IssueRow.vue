@@ -8,7 +8,11 @@
       </a>
     </td>
     <td>
-      <a :href="chargeUrl(issue.charge_id)" target="_blank">
+      <a
+        v-if="issue.charge_id"
+        :href="chargeUrl(issue.charge_id)"
+        target="_blank"
+      >
         {{ issue.charge_id }}
       </a>
     </td>
