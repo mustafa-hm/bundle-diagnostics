@@ -9,9 +9,9 @@ const {
 } = process.env
 
 async function main () {
-  console.log('=================================')
-  console.log('// Resetting Issues')
   if (RESET) {
+    console.log('=================================')
+    console.log('// Resetting Issues')
     await reset()
   }
 
