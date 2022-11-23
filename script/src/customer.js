@@ -1,12 +1,6 @@
 import { AssertionError } from 'assert'
-import recharge from './recharge.js'
+import { getSubscriptions } from './recharge.js'
 import { assert, getProp, groupBundles } from './utils.js'
-import { createIssue } from './issues.js'
-
-export async function getSubscriptions (customerId) {
-  const { data } = await recharge.get(`/subscriptions?customer_id=${customerId}&limit=250&page=1&status=active`)
-  return data.subscriptions
-}
 
 const report = (e) =>{
   const { message, expected, actual } = e
@@ -20,7 +14,6 @@ const report = (e) =>{
 export async function verifyCustomer (customerId) {
   const issues = []
   const subs = await getSubscriptions(customerId)
-
 
   const assertAndReport = async (expected, actual, attributes) => {
     try {

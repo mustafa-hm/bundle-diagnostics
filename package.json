@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "script:start": "dotenv yarn workspace script start",
+    "script:migrate": "dotenv yarn workspace script migrate",
     "dev": "dotenv yarn workspace frontend dev",
     "build": "yarn workspace frontend build",
     "start": "yarn workspace frontend start"

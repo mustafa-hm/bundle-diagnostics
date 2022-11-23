@@ -11,6 +11,7 @@
     "date-fns": "^2.29.3"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "migrate": "node migrate.js"
   }
 }

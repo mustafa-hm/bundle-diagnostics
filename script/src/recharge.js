@@ -8,4 +8,10 @@ export const recharge = axios.create({
   }
 })
 
+export async function getSubscriptions (customerId) {
+  const { data } = await recharge.get(`/subscriptions?customer_id=${customerId}&limit=250&page=1&status=active`)
+  return data.subscriptions
+}
+
 export default recharge
+
